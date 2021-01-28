@@ -45,7 +45,7 @@ class ProcessCommand extends Command
             $io->write('Checking ' . $site->getName() . '...');
 
             if ($site->hasChanged()) {
-                $io->write('Changed. Sending notification');
+                $io->writeln('Changed. Sending notification');
                 $notification = (new Notification('PS5 Stock Alert: ' . $site->getName(), ['email']));
                 $notification->content(
                     $site->getName() . ' may have PS5 stock. URL ' . $site->getProductUrl()
@@ -53,7 +53,7 @@ class ProcessCommand extends Command
 
                 $this->notifier->send($notification, new Recipient('andy@andypalmer.me'));
             } else {
-                $io->write('No change');
+                $io->writeln('No change');
             }
         }
 
