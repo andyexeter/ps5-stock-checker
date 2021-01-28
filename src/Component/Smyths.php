@@ -2,22 +2,24 @@
 
 namespace App\Component;
 
+use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class Argos implements Site
+class Smyths implements Site
 {
-    private const URL = 'https://www.argos.co.uk/product/8349000?clickSR=slp:term:ps5:1:568:1';
+    private const URL = 'https://www.smythstoys.com/uk/en-gb/video-games-and-tablets/playstation-5/playstation-5-consoles/playstation-5-console/p/191259';
     private const HEADERS = [
-        'authority' => 'www.argos.co.uk',
+        'authority' => 'www.smythstoys.com',
+        'cache-control' => 'max-age=0',
+        'dnt' => '1',
         'upgrade-insecure-requests' => '1',
         'user-agent' => 'Mozilla/5.0 (Macintosh; Intel Mac OS X 11_1_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/88.0.4324.96 Safari/537.36',
         'accept' => 'text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-        'service-worker-navigation-preload' => 'true',
         'sec-fetch-site' => 'same-origin',
         'sec-fetch-mode' => 'navigate',
         'sec-fetch-user' => '?1',
         'sec-fetch-dest' => 'document',
-        'referer' => 'https://www.argos.co.uk/search/ps5/?clickOrigin=searchbar:home:term:ps5',
+        'referer' => 'https://www.smythstoys.com/uk/en-gb/video-games-and-tablets/playstation-5/c/SM060461',
         'accept-language' => 'en-GB,en-US;q=0.9,en;q=0.8',
     ];
 
@@ -32,17 +34,16 @@ class Argos implements Site
     {
         $request = $this->httpClient->request('GET', self::URL, [
             'headers' => self::HEADERS,
-            'max_redirects' => 0,
         ]);
 
-        if (\in_array($request->getStatusCode(), [301, 302])) {
-            if ($redirectUrl = $request->getHeaders(false)['location'][0]) {
-                $path = parse_url($redirectUrl, PHP_URL_PATH);
-
-                if ($path === '/vp/oos/ps5.html') {
-                    return false;
-                }
+        try {
+            $crawler = new Crawler($request->getContent());
+            $addToCartButton = $crawler->filter('#addToCartButton');
+            if ($addToCartButton->attr('disabled') === 'disabled') {
+                return false;
             }
+        } catch (\Exception $e) {
+            return false;
         }
 
         return true;
@@ -50,7 +51,7 @@ class Argos implements Site
 
     public function getName(): string
     {
-        return 'Argos';
+        return 'Smyths';
     }
 
     public function getProductUrl(): string
