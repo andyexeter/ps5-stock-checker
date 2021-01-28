@@ -17,6 +17,7 @@
         "symfony/mailer": "5.2.*",
         "symfony/notifier": "5.2.*",
         "symfony/sendgrid-mailer": "5.2.*",
+        "symfony/string": "5.2.*",
         "symfony/twig-bundle": "5.2.*",
         "symfony/yaml": "5.2.*",
         "twig/cssinliner-extra": "^3.2",

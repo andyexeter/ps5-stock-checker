@@ -32,16 +32,22 @@ class ProcessCommand extends Command
     protected function configure()
     {
         $this
-            ->setDescription('Add a short description for your command')
-            ->addArgument('arg1', InputArgument::OPTIONAL, 'Argument description')
-            ->addOption('option1', null, InputOption::VALUE_NONE, 'Option description');
+            ->setDescription('Runs the stock checker')
+            ->addArgument('sites', InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
+                'Space separated list of sites to check');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
+        $sitesToCheck = $input->getArgument('sites');
+
         foreach ($this->sites as $site) {
+            if ($sitesToCheck && !\in_array($site->getName(), $sitesToCheck)) {
+                continue;
+            }
+
             $io->write('Checking ' . $site->getName() . '...');
 
             if ($site->hasChanged()) {
