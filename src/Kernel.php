@@ -23,4 +23,8 @@ class Kernel extends BaseKernel
             (require $path)($container->withPath($path), $this);
         }
     }
+
+    public function configureRoutes(RoutingConfigurator $routes): void
+    {
+    }
 }
