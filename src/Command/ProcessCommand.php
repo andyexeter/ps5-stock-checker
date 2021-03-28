@@ -33,18 +33,23 @@ class ProcessCommand extends Command
     {
         $this
             ->setDescription('Runs the stock checker')
-            ->addArgument('sites', InputArgument::OPTIONAL | InputArgument::IS_ARRAY,
-                'Space separated list of sites to check');
+            ->addArgument('sites', InputArgument::OPTIONAL | InputArgument::IS_ARRAY, 'Space separated list of sites to check')
+            ->addOption('exclude', null, InputOption::VALUE_REQUIRED | InputOption::VALUE_IS_ARRAY, 'Sites to exclude');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
 
-        $sitesToCheck = $input->getArgument('sites');
+        $sitesToInclude = $input->getArgument('sites');
+        $sitesToExclude = $input->getOption('exclude');
 
         foreach ($this->sites as $site) {
-            if ($sitesToCheck && !\in_array($site->getName(), $sitesToCheck)) {
+            if ($sitesToInclude && !\in_array($site->getName(), $sitesToInclude)) {
+                continue;
+            }
+
+            if (\in_array($site->getName(), $sitesToExclude)) {
                 continue;
             }
 
