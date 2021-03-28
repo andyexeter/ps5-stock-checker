@@ -10,6 +10,8 @@ services:
     _defaults:
         autowire: true      # Automatically injects dependencies in your services.
         autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+        bind:
+            $emailRecipient: '%env(EMAIL_RECIPIENT)%'
 
     _instanceof:
         # services whose classes are instances of CustomInterface will be tagged automatically

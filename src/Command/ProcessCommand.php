@@ -21,12 +21,14 @@ class ProcessCommand extends Command
     /** @var iterable<Site> */
     private iterable $sites;
     private NotifierInterface $notifier;
+    private string $emailRecipient;
 
-    public function __construct(iterable $sites, NotifierInterface $notifier)
+    public function __construct(iterable $sites, NotifierInterface $notifier, string $emailRecipient)
     {
         parent::__construct();
-        $this->sites = $sites;
-        $this->notifier = $notifier;
+        $this->sites          = $sites;
+        $this->notifier       = $notifier;
+        $this->emailRecipient = $emailRecipient;
     }
 
     protected function configure()
@@ -62,7 +64,7 @@ class ProcessCommand extends Command
                     $site->getName() . ' may have PS5 stock. URL ' . $site->getProductUrl()
                 );
 
-                $this->notifier->send($notification, new Recipient('andy@andypalmer.me'));
+                $this->notifier->send($notification, new Recipient($this->emailRecipient));
             } else {
                 $io->writeln('No change');
             }
