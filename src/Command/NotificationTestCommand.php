@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Component\Site;
+use App\Component\SiteInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -24,7 +24,7 @@ class NotificationTestCommand extends Command
     public function __construct(NotifierInterface $notifier, string $emailRecipient)
     {
         parent::__construct();
-        $this->notifier = $notifier;
+        $this->notifier       = $notifier;
         $this->emailRecipient = $emailRecipient;
     }
 
@@ -35,12 +35,19 @@ class NotificationTestCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $notification = (new Notification('TEST: PS5 Stock Checker', ['email']));
-        $notification->content(
-            'This is a test notification to ensure the PS5 stock checker is working'
-        );
+        $io = new SymfonyStyle($input, $output);
+        if (!$this->emailRecipient) {
+            $io->error('Email recipient cannot be blank');
+            return Command::FAILURE;
+        }
+
+        $notification = (new Notification('TEST: PS5 Stock Checker', ['email']))
+            ->importance(Notification::IMPORTANCE_LOW)
+            ->content('This is a test notification to ensure the PS5 stock checker is working');
 
         $this->notifier->send($notification, new Recipient($this->emailRecipient));
+
+        $io->success('Test notification sent');
 
         return Command::SUCCESS;
     }

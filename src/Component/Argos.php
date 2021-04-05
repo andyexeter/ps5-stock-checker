@@ -2,7 +2,7 @@
 
 namespace App\Component;
 
-class Argos extends AbstractSite implements Site
+class Argos extends AbstractSite implements SiteInterface
 {
     private const HEADERS = [
         'authority' => 'www.argos.co.uk',

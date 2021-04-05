@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Component\Site;
+use App\Component\SiteInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Notifier\Recipient\Recipient;
 class ListSitesCommand extends Command
 {
     protected static $defaultName = 'app:list';
-    /** @var array<Site> */
+    /** @var array<SiteInterface> */
     private array $sites;
 
     public function __construct(iterable $sites)
@@ -38,7 +38,7 @@ class ListSitesCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
-        $io->table(['Name', 'FQCN'], array_map(fn(Site $site) => [$site->getName(), get_class($site)], $this->sites));
+        $io->table(['Name', 'FQCN'], array_map(fn(SiteInterface $site) => [$site->getName(), get_class($site)], $this->sites));
 
         return Command::SUCCESS;
     }

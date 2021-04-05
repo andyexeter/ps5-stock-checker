@@ -2,7 +2,7 @@
 
 namespace App\Component;
 
-class Game extends AbstractSite implements Site
+class Game extends AbstractSite implements SiteInterface
 {
     private const HEADERS = [
         'authority' => 'www.game.co.uk',

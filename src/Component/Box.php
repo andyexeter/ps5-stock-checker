@@ -6,7 +6,7 @@ use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 use function Symfony\Component\String\s;
 
-class Box extends AbstractSite implements Site
+class Box extends AbstractSite implements SiteInterface
 {
     private const HEADERS = [
         'authority' => 'www.box.co.uk',

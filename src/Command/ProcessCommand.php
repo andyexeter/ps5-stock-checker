@@ -2,7 +2,7 @@
 
 namespace App\Command;
 
-use App\Component\Site;
+use App\Component\SiteInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -18,7 +18,7 @@ use Symfony\Component\Notifier\Recipient\Recipient;
 class ProcessCommand extends Command
 {
     protected static $defaultName = 'app:process';
-    /** @var iterable<Site> */
+    /** @var iterable<SiteInterface> */
     private iterable $sites;
     private NotifierInterface $notifier;
     private string $emailRecipient;
@@ -43,6 +43,11 @@ class ProcessCommand extends Command
     {
         $io = new SymfonyStyle($input, $output);
 
+        if (!$this->emailRecipient) {
+            $io->error('Email recipient cannot be blank');
+            return Command::FAILURE;
+        }
+
         $sitesToInclude = $input->getArgument('sites');
         $sitesToExclude = $input->getOption('exclude');
 
@@ -59,10 +64,10 @@ class ProcessCommand extends Command
 
             if ($site->hasChanged()) {
                 $io->writeln('Changed. Sending notification');
-                $notification = (new Notification('PS5 Stock Alert: ' . $site->getName(), ['email']));
-                $notification->content(
-                    $site->getName() . ' may have PS5 stock. URL ' . $site->getProductUrl()
-                );
+                $notification = (new Notification('PS5 Stock Alert: ' . $site->getName(), ['email']))
+                    ->content(
+                        $site->getName() . ' may have PS5 stock. URL ' . $site->getProductUrl()
+                    );
 
                 $this->notifier->send($notification, new Recipient($this->emailRecipient));
             } else {

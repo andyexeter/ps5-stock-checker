@@ -5,7 +5,7 @@ namespace App\Component;
 use Symfony\Component\DomCrawler\Crawler;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
 
-class Smyths extends AbstractSite implements Site
+class Smyths extends AbstractSite implements SiteInterface
 {
     private const HEADERS = [
         'authority' => 'www.smythstoys.com',

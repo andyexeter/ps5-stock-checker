@@ -2,7 +2,7 @@
 
 namespace App\Component;
 
-interface Site
+interface SiteInterface
 {
     public function getName(): string;
     public function hasChanged(): bool;

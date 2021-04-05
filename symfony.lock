@@ -157,9 +157,6 @@
     "symfony/polyfill-mbstring": {
         "version": "v1.22.0"
     },
-    "symfony/polyfill-php73": {
-        "version": "v1.22.0"
-    },
     "symfony/polyfill-php80": {
         "version": "v1.22.0"
     },
@@ -234,7 +231,7 @@
         "version": "v3.2.1"
     },
     "twig/inky-extra": {
-        "version": "v3.2.1"
+        "version": "v3.3.0"
     },
     "twig/twig": {
         "version": "v3.2.1"
