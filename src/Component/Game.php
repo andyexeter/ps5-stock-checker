@@ -23,6 +23,6 @@ class Game extends AbstractSite implements SiteInterface
 
     public function getProductUrl(): string
     {
-        return 'https://www.game.co.uk/en/m/playstation-5-console-2826338';
+        return 'https://www.game.co.uk/en/playstation-5-console-2826338';
     }
 }
